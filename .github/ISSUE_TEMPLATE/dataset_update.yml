@@ -1,0 +1,24 @@
+name: Dataset update
+description: Propose an update to township, region, phone, or language data
+title: "data: "
+labels: [data]
+body:
+  - type: textarea
+    id: change
+    attributes:
+      label: Dataset change
+      description: What data should be added, corrected, or removed?
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source and license
+      description: Provide source URL, license, and redistribution notes.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation notes
+      description: How did you verify the data?

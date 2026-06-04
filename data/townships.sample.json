@@ -1,0 +1,20 @@
+[
+  {
+    "id": "yangon-yangon-west-sanchaung",
+    "townshipEn": "Sanchaung",
+    "townshipMm": "စမ်းချောင်း",
+    "districtEn": "Yangon West",
+    "districtMm": "ရန်ကုန်အနောက်ပိုင်း",
+    "regionEn": "Yangon Region",
+    "regionMm": "ရန်ကုန်တိုင်းဒေသကြီး"
+  },
+  {
+    "id": "mandalay-chanayethazan",
+    "townshipEn": "Chanayethazan",
+    "townshipMm": "ချမ်းအေးသာစံ",
+    "districtEn": "Mandalay",
+    "districtMm": "မန္တလေး",
+    "regionEn": "Mandalay Region",
+    "regionMm": "မန္တလေးတိုင်းဒေသကြီး"
+  }
+]

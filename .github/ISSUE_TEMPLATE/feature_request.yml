@@ -1,0 +1,24 @@
+name: Feature request
+description: Suggest a useful Myanmar localization feature
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What Myanmar-language developer problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the API, CLI behavior, or documentation you want.
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Realistic examples
+      description: Include sample inputs and expected outputs if possible.

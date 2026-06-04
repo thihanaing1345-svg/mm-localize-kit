@@ -1,0 +1,42 @@
+name: Bug report
+description: Report a reproducible bug in mm-localize-kit
+title: "bug: "
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Provide a minimal code example, CLI command, or input text.
+      render: ts
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: 0.1.0
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Unicode/Zawgyi
+        - Phone validation
+        - Currency
+        - Numerals
+        - Date formatting
+        - Township data
+        - Search normalization
+        - React/Next.js helpers
+        - CLI
+        - Documentation
+    validations:
+      required: true
