@@ -24,7 +24,7 @@ Generic i18n libraries are useful for translations, pluralization, and locale-aw
 | Search normalization | Normalize mixed Myanmar/English search text for application-level search indexes. |
 | Township data | Provide a starter township/region helper dataset with a documented need for community review. |
 | Form helpers | Provide small validation helpers that can be used in React, Next.js, or plain TypeScript forms. |
-| CLI | Clean Myanmar text files or stdin for simple dataset preparation workflows. |
+| CLI | Clean Myanmar text files and inspect text or phone numbers for simple dataset preparation workflows. |
 
 ## Installation
 
@@ -91,11 +91,13 @@ Build the package first when running from a local checkout.
 
 ```bash
 pnpm build
-node dist/cli/index.js examples/cli/raw.txt
-cat examples/cli/raw.txt | node dist/cli/index.js --stdin
+node dist/cli/index.js clean examples/cli/raw.txt
+node dist/cli/index.js clean examples/cli/raw.txt /tmp/mm-localize-clean.txt
+node dist/cli/index.js detect "မင်္ဂလာပါ"
+node dist/cli/index.js phone "+၉၅၉၇၈၄၁၂၃၄၅၆"
 ```
 
-The CLI is intentionally minimal in the first release. Future versions should add safer file-output options, JSON reports, and check-only mode for CI pipelines.
+The CLI is intentionally minimal in the first release. It currently supports file-based `clean`, `detect`, and `phone` commands. Future versions should add documented stdin support, safer file-output options, JSON reports, and check-only mode for CI pipelines.
 
 ## Examples
 

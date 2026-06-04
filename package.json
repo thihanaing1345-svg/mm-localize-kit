@@ -4,6 +4,7 @@
   "description": "TypeScript-first Myanmar localization utilities for Unicode text, phone numbers, MMK currency, numerals, dates, search normalization, forms, and data cleanup.",
   "type": "module",
   "license": "MIT",
+  "author": "thihanaing1345-svg",
   "homepage": "https://github.com/thihanaing1345-svg/mm-localize-kit#readme",
   "repository": {
     "type": "git",
@@ -28,6 +29,9 @@
     "cli"
   ],
   "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

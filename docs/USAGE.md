@@ -60,8 +60,10 @@ These functions are framework-neutral result objects, so they can be used with R
 
 ```bash
 pnpm build
-node dist/cli/index.js examples/cli/raw.txt
-cat examples/cli/raw.txt | node dist/cli/index.js --stdin
+node dist/cli/index.js clean examples/cli/raw.txt
+node dist/cli/index.js clean examples/cli/raw.txt /tmp/mm-localize-clean.txt
+node dist/cli/index.js detect "မင်္ဂလာပါ"
+node dist/cli/index.js phone "+၉၅၉၇၈၄၁၂၃၄၅၆"
 ```
 
-The CLI is intentionally simple in v0.1.0. Planned improvements include JSON reports, output-file support, and stricter check-only mode for CI pipelines.
+The CLI is intentionally simple in v0.1.0. It currently supports file-based `clean`, `detect`, and `phone` commands. Planned improvements include documented stdin support, JSON reports, safer output-file options, and stricter check-only mode for CI pipelines.
