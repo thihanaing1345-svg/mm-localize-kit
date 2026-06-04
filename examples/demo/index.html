@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>mm-localize-kit Demo</title>
+    <style>
+      :root { color-scheme: light; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+      body { margin: 0; background: #f8fafc; color: #172033; }
+      main { max-width: 920px; margin: 0 auto; padding: 48px 20px; }
+      .card { background: white; border: 1px solid #e2e8f0; border-radius: 18px; padding: 24px; box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08); }
+      h1 { margin-top: 0; font-size: clamp(2rem, 4vw, 3.2rem); }
+      label { display: block; font-weight: 700; margin: 18px 0 8px; }
+      input { width: 100%; box-sizing: border-box; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; font: inherit; }
+      pre { overflow: auto; background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 18px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 18px; }
+      .metric { background: #f1f5f9; border-radius: 12px; padding: 16px; }
+      .metric strong { display: block; color: #475569; font-size: 0.85rem; margin-bottom: 6px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="card">
+        <h1>Myanmar localization demo</h1>
+        <p>This small static page demonstrates how an app might preview Myanmar and English localization behavior. Build the package first with <code>pnpm build</code>, then serve this folder from the repository root.</p>
+        <label for="name">Customer name</label>
+        <input id="name" value="မောင်မောင်" />
+        <label for="phone">Phone number</label>
+        <input id="phone" value="+၉၅၉၇၈၄၁၂၃၄၅၆" />
+        <label for="amount">Amount in MMK</label>
+        <input id="amount" value="125000" />
+        <div class="grid">
+          <div class="metric"><strong>Encoding</strong><span id="encoding"></span></div>
+          <div class="metric"><strong>Normalized phone</strong><span id="phoneOut"></span></div>
+          <div class="metric"><strong>MMK display</strong><span id="money"></span></div>
+          <div class="metric"><strong>Search key</strong><span id="search"></span></div>
+        </div>
+        <pre id="json"></pre>
+      </section>
+    </main>
+    <script type="module">
+      import { detectMyanmarEncoding, formatMMK, normalizeMyanmarPhoneNumber, normalizeMyanmarSearchText } from '../../dist/index.js';
+      const $ = (id) => document.getElementById(id);
+      function render() {
+        const name = $('name').value;
+        const phone = $('phone').value;
+        const amount = Number($('amount').value || 0);
+        const result = {
+          encoding: detectMyanmarEncoding(name),
+          normalizedPhone: normalizeMyanmarPhoneNumber(phone),
+          mmk: formatMMK(amount, { symbol: 'ကျပ်', useMyanmarNumerals: true }),
+          searchKey: normalizeMyanmarSearchText(`${name} ${phone}`),
+        };
+        $('encoding').textContent = `${result.encoding.encoding} (${Math.round(result.encoding.confidence * 100)}%)`;
+        $('phoneOut').textContent = result.normalizedPhone;
+        $('money').textContent = result.mmk;
+        $('search').textContent = result.searchKey;
+        $('json').textContent = JSON.stringify(result, null, 2);
+      }
+      ['name', 'phone', 'amount'].forEach((id) => $(id).addEventListener('input', render));
+      render();
+    </script>
+  </body>
+</html>

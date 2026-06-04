@@ -1,7 +1,7 @@
 {
   "name": "mm-localize-kit",
   "version": "0.1.0",
-  "description": "TypeScript-first utilities for Myanmar-language localization, validation, formatting, search normalization, and dataset cleanup.",
+  "description": "TypeScript-first Myanmar localization utilities for Unicode text, phone numbers, MMK currency, numerals, dates, search normalization, forms, and data cleanup.",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/thihanaing1345-svg/mm-localize-kit#readme",
@@ -17,12 +17,15 @@
     "burmese",
     "localization",
     "i18n",
+    "l10n",
     "zawgyi",
     "unicode",
     "mmk",
+    "phone-validation",
     "typescript",
     "react",
-    "nextjs"
+    "nextjs",
+    "cli"
   ],
   "sideEffects": false,
   "exports": {
@@ -30,10 +33,43 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./text": {
+      "types": "./dist/text/index.d.ts",
+      "import": "./dist/text/index.js"
+    },
+    "./phone": {
+      "types": "./dist/phone/index.d.ts",
+      "import": "./dist/phone/index.js"
+    },
+    "./currency": {
+      "types": "./dist/currency/index.d.ts",
+      "import": "./dist/currency/index.js"
+    },
+    "./numerals": {
+      "types": "./dist/numerals/index.d.ts",
+      "import": "./dist/numerals/index.js"
+    },
+    "./date": {
+      "types": "./dist/date/index.d.ts",
+      "import": "./dist/date/index.js"
+    },
+    "./geo": {
+      "types": "./dist/geo/index.d.ts",
+      "import": "./dist/geo/index.js"
+    },
+    "./search": {
+      "types": "./dist/search/index.d.ts",
+      "import": "./dist/search/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js"
+    },
     "./data/townships": {
       "types": "./dist/geo/townships.d.ts",
       "import": "./dist/geo/townships.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "bin": {
     "mm-localize": "./dist/cli/index.js"
@@ -48,9 +84,10 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "prepublishOnly": "pnpm lint && pnpm test && pnpm build"
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "prepublishOnly": "pnpm check"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
@@ -62,5 +99,8 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

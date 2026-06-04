@@ -1,37 +1,36 @@
 # mm-localize-kit
 
-**mm-localize-kit** is a TypeScript-first open-source toolkit for developers building Myanmar-language websites, e-commerce systems, education platforms, CRMs, content tools, and online shop workflows. The project focuses on practical localization utilities that repeatedly appear in Myanmar software projects: Unicode and Zawgyi detection, Unicode cleanup, Myanmar phone validation, MMK formatting, Burmese numeral conversion, date formatting, township helpers, search normalization, form validators, and a CLI for cleaning text datasets.
+**mm-localize-kit** is a TypeScript-first open-source toolkit for developers building Myanmar-language websites, e-commerce platforms, education products, CRMs, dashboards, and data-cleaning workflows.
 
-> This repository is intended to be a real, maintainable open-source project. It should not be represented as widely adopted until usage exists. The first goal is to ship a useful MVP, invite feedback from Myanmar developers, and build a transparent maintenance record.
+Myanmar applications often need practical localization behavior that is not covered by generic internationalization libraries. Teams may need to validate local phone numbers, normalize Myanmar text for search, format MMK prices, convert Burmese numerals, handle Unicode-oriented data pipelines, and clean mixed-language datasets before importing them into production systems. This project provides small, tested utilities for those recurring tasks.
 
-## Why this project exists
+> **Project status:** v0.1.0 is an early public release. The repository is useful as a starter toolkit, but it does not claim broad adoption yet. Feedback, real-world test cases, dataset corrections, and documentation contributions are welcome.
 
-Myanmar-language applications often need the same small but important utilities. Developers may need to normalize mixed text before search, accept both Burmese and Latin digits in phone fields, format prices in MMK, prepare datasets from spreadsheets, or validate localized forms in React and Next.js. Existing libraries solve parts of this problem, especially Zawgyi detection or phone validation, but teams still combine many snippets across projects. **mm-localize-kit** aims to provide a modern, documented, tested, framework-friendly package that brings these workflows together.
+## Features
 
-## Current status
-
-This repository is currently an **MVP scaffold**. It includes working utilities, tests, examples, community files, and a roadmap, but it should be improved with real-world datasets, accuracy benchmarks, and community review before any claim of broad adoption.
-
-| Area | MVP support | Notes |
+| Area | Utilities | Current maturity |
 | --- | --- | --- |
-| Unicode/Zawgyi detection | Heuristic detector | Future versions should benchmark against labeled data and may integrate mature detectors. |
-| Unicode normalization | Yes | NFC normalization, whitespace cleanup, optional zero-width-space cleanup. |
-| Myanmar phone validation | Yes | Supports Burmese digits and common mobile/fixed-line shapes; operator mapping needs ongoing review. |
-| MMK formatting | Yes | Supports English or Myanmar numerals and configurable labels. |
-| Burmese numerals | Yes | Converts ASCII digits and Myanmar digits both ways. |
-| Myanmar date formatting | Yes | Uses `Intl.DateTimeFormat` with Myanmar locale support where available. |
-| Township/region helpers | Starter dataset | The dataset must be expanded with documented provenance. |
-| Search normalization | Yes | Normalizes Unicode, punctuation, whitespace, and digits. |
-| React/Next.js validation helpers | Yes | Framework-friendly pure validators. |
-| CLI dataset cleanup | Yes | Cleans files for search and dataset preparation. |
+| Myanmar text | Detect Myanmar script, classify Unicode-like/Zawgyi-like text, normalize whitespace and Unicode composition | MVP heuristic implementation |
+| Phone numbers | Normalize, validate, parse, and infer common Myanmar mobile operator prefixes | MVP validation rules |
+| MMK currency | Format Myanmar Kyat values with English or Myanmar numerals | Stable small utility |
+| Burmese numerals | Convert ASCII digits to Myanmar numerals and back | Stable small utility |
+| Dates | Format JavaScript dates for Myanmar-facing interfaces | MVP helper |
+| Township data | Search a starter township/region dataset | Sample dataset, needs community review |
+| Search | Normalize mixed Myanmar/English search strings | MVP helper |
+| React forms | Framework-agnostic validator functions usable in React and Next.js | MVP helper |
+| CLI | Clean Myanmar text datasets from files or stdin | MVP command |
 
 ## Installation
 
 ```bash
+pnpm add mm-localize-kit
+# or
 npm install mm-localize-kit
 # or
-pnpm add mm-localize-kit
+yarn add mm-localize-kit
 ```
+
+The package targets **Node.js 18+** and ships as native ESM with TypeScript declaration files.
 
 ## Quick start
 
@@ -39,67 +38,80 @@ pnpm add mm-localize-kit
 import {
   detectMyanmarEncoding,
   formatMMK,
-  normalizeMyanmarPhoneNumber,
+  isValidMyanmarPhoneNumber,
   normalizeMyanmarSearchText,
-  toMyanmarNumerals
+  toMyanmarNumerals,
 } from 'mm-localize-kit';
 
 console.log(detectMyanmarEncoding('မင်္ဂလာပါ'));
-console.log(normalizeMyanmarPhoneNumber('+၉၅၉၇၈၄၁၂၃၄၅၆'));
+console.log(isValidMyanmarPhoneNumber('+၉၅၉၇၈၄၁၂၃၄၅၆'));
 console.log(formatMMK(125000, { symbol: 'ကျပ်', useMyanmarNumerals: true }));
-console.log(toMyanmarNumerals('2026'));
-console.log(normalizeMyanmarSearchText(' Order-၁၂၃၊ မင်္ဂလာပါ! '));
+console.log(toMyanmarNumerals('Order 123'));
+console.log(normalizeMyanmarSearchText('  Order-၁၂၃၊ မင်္ဂလာပါ!  '));
 ```
 
-## CLI usage
+## Subpath imports
 
-```bash
-mm-localize clean ./raw.txt ./clean.txt
-mm-localize detect "မင်္ဂလာပါ"
-mm-localize phone "+၉၅၉၇၈၄၁၂၃၄၅၆"
-```
+For smaller imports and clearer code ownership, every utility area has a documented subpath export.
 
-The CLI is designed for dataset cleanup tasks such as normalizing product names, school records, township columns, or CRM exports before search indexing.
-
-## API overview
-
-| Function | Purpose |
+| Use case | Import path |
 | --- | --- |
-| `detectMyanmarEncoding(text)` | Returns `unicode`, `zawgyi`, `mixed`, or `unknown` with confidence metadata. |
-| `normalizeUnicode(text, options)` | Applies Unicode composition and configurable whitespace cleanup. |
-| `normalizeMyanmarPhoneNumber(phone)` | Converts Burmese digits and international prefixes to local Myanmar format. |
-| `isValidMyanmarPhoneNumber(phone)` | Validates common Myanmar mobile and fixed-line formats. |
-| `formatMMK(amount, options)` | Formats Myanmar Kyat values with configurable labels and numerals. |
-| `toMyanmarNumerals(value)` | Converts ASCII digits to Burmese numerals. |
-| `toArabicNumerals(value)` | Converts Burmese numerals to ASCII digits. |
-| `formatMyanmarDate(date, options)` | Formats Gregorian dates for Myanmar-language interfaces. |
-| `findTownship(query)` | Finds a township from the bundled dataset. |
-| `normalizeMyanmarSearchText(text)` | Produces a normalized string for search indexing or matching. |
-| `validateMyanmarPhone(value)` | Provides form-friendly validation results. |
+| Text detection and normalization | `mm-localize-kit/text` |
+| Phone number helpers | `mm-localize-kit/phone` |
+| Currency formatting | `mm-localize-kit/currency` |
+| Numeral conversion | `mm-localize-kit/numerals` |
+| Date formatting | `mm-localize-kit/date` |
+| Township and region helpers | `mm-localize-kit/geo` |
+| Search normalization | `mm-localize-kit/search` |
+| Form validation helpers | `mm-localize-kit/react` |
+| Township sample data | `mm-localize-kit/data/townships` |
 
 ## Examples
 
-The repository includes examples for Node.js, React, Next.js, and CLI usage under the `examples/` directory. These examples are intentionally small so developers can copy patterns into real applications.
+The repository includes practical examples for common developer workflows.
 
-## Development
+| Example | Path | Purpose |
+| --- | --- | --- |
+| React form | `examples/react/MyanmarCheckoutForm.tsx` | Validate checkout phone/name fields |
+| Next.js page | `examples/nextjs/app/products/page.tsx` | Format product data for Myanmar users |
+| Plain JavaScript | `examples/javascript/index.mjs` | Use utilities without a framework |
+| Browser demo page | `examples/demo/index.html` | Show Myanmar/English localization examples |
+| CLI cleanup | `examples/cli/README.md` | Clean a text dataset from the terminal |
+
+## CLI usage
+
+After installing globally or running from a built checkout, the CLI can normalize whitespace and prepare text files for downstream processing.
 
 ```bash
-git clone https://github.com/thihanaing1345-svg/mm-localize-kit.git
-cd mm-localize-kit
-pnpm install
-pnpm test
 pnpm build
-pnpm lint
+node dist/cli/index.js examples/cli/raw.txt
+cat examples/cli/raw.txt | node dist/cli/index.js --stdin
 ```
 
-## Accuracy and limitations
+## Documentation
 
-The first release uses practical heuristics for some features. It is useful for many application-level workflows, but it is not a replacement for audited national datasets, telecom authority data, or mature Zawgyi machine-learning detectors. Contributions that improve accuracy, benchmarks, and documented data provenance are especially welcome.
+Detailed usage notes are available in the `docs/` folder.
 
-## OpenAI Codex for Open Source readiness
+| Document | Description |
+| --- | --- |
+| `docs/USAGE.md` | Practical guide for text, phone, currency, date, search, React, and CLI usage |
+| `docs/API.md` | Public API reference for exported functions |
+| `docs/DATA_PROVENANCE.md` | Dataset provenance and review policy |
+| `docs/NPM_PUBLISHING.md` | npm publishing plan |
+| `docs/PROJECT_PLAN.md` | Open-source project plan and Codex readiness assessment |
 
-This project may become suitable for OpenAI’s Codex for Open Source program if it develops real usage, public maintenance activity, releases, issues, and ecosystem value. A brand-new repository should not claim immediate adoption. The ethical path is to launch the project, publish packages, collect feedback, and apply only when the repository has credible evidence of usefulness or a clear explanation of its underserved ecosystem importance.
+## Roadmap
+
+The short-term roadmap focuses on correctness, documentation, and real usage rather than inflated metrics. Planned work includes broader township data review, improved Unicode/Zawgyi handling, more validation cases, browser documentation, and a small documentation site. See [`ROADMAP.md`](./ROADMAP.md) for details.
+
+## Contributing
+
+Contributions are welcome, especially from developers who build Myanmar-language systems in production. Good first contributions include failing test cases, township data corrections with sources, documentation improvements, framework examples, and validation edge cases. Please read [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) before opening issues or pull requests.
+
+## Security
+
+Please do not open public issues for security-sensitive problems. Follow the responsible disclosure process in [`SECURITY.md`](./SECURITY.md).
 
 ## License
 
-This project is released under the **MIT License**. Dataset contributions may require additional provenance notes in `docs/DATA_PROVENANCE.md` before inclusion.
+This project is released under the [MIT License](./LICENSE).

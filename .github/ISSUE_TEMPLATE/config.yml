@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security reports
+    url: https://github.com/thihanaing1345-svg/mm-localize-kit/security/advisories/new
+    about: Please report security-sensitive issues privately when possible.
